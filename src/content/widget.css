@@ -1,0 +1,128 @@
+/* 인페이지 타이머 위젯 — 호스트 페이지 스타일과 충돌하지 않도록 #id 스코프 + 명시 값 사용 */
+#algo-tracker-widget {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2147483647;
+  width: 220px;
+  padding: 12px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple SD Gothic Neo",
+    "Malgun Gothic", sans-serif;
+  color: #e5e7eb;
+  background: #1f2230;
+  border: 1px solid #343849;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  user-select: none;
+}
+
+#algo-tracker-widget .at-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+}
+#algo-tracker-widget .at-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--at-accent, #6366f1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--at-accent, #6366f1) 25%, transparent);
+}
+#algo-tracker-widget .at-site {
+  color: #c7cbd6;
+}
+#algo-tracker-widget .at-spacer {
+  flex: 1;
+}
+#algo-tracker-widget .at-x {
+  all: unset;
+  cursor: pointer;
+  color: #8b90a0;
+  font-size: 16px;
+  line-height: 1;
+  padding: 2px 4px;
+  border-radius: 6px;
+}
+#algo-tracker-widget .at-x:hover {
+  color: #fff;
+  background: #2c3043;
+}
+
+#algo-tracker-widget .at-title {
+  margin: 8px 0 2px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #f3f4f6;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#algo-tracker-widget .at-time {
+  font-variant-numeric: tabular-nums;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-align: center;
+  margin: 4px 0 10px;
+  color: #9ca3af;
+}
+#algo-tracker-widget.at-running .at-time {
+  color: #fff;
+}
+
+#algo-tracker-widget .at-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 6px;
+}
+#algo-tracker-widget .at-btn {
+  all: unset;
+  box-sizing: border-box;
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 6px;
+  border-radius: 9px;
+  background: #2c3043;
+  color: #e5e7eb;
+  transition: background 0.12s ease, transform 0.04s ease;
+}
+#algo-tracker-widget .at-btn:hover {
+  background: #363b52;
+}
+#algo-tracker-widget .at-btn:active {
+  transform: translateY(1px);
+}
+#algo-tracker-widget .at-solve {
+  background: #16432c;
+  color: #c7f9d9;
+}
+#algo-tracker-widget .at-solve:hover {
+  background: #1c5638;
+}
+#algo-tracker-widget .at-toggle {
+  background: #6366f1;
+  color: #fff;
+}
+#algo-tracker-widget .at-toggle:hover {
+  background: #5457e0;
+}
+
+#algo-tracker-widget .at-toast {
+  margin-top: 8px;
+  font-size: 11px;
+  text-align: center;
+  color: #9ca3af;
+  height: 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+#algo-tracker-widget .at-toast.show {
+  opacity: 1;
+}

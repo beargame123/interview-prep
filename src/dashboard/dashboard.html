@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="dashboard.css" />
+    <title>CodePrep — 대시보드</title>
+  </head>
+  <body>
+    <header class="hd">
+      <div class="hd-left">
+        <span class="logo"></span>
+        <h1>CodePrep</h1>
+      </div>
+      <nav class="tabs">
+        <button class="tab-btn active" data-tab="stats">📊 학습 통계</button>
+        <button class="tab-btn" data-tab="roadmap">📋 공부 로드맵</button>
+        <button class="tab-btn" data-tab="interview">🎤 실전 풀이</button>
+      </nav>
+      <div class="hd-right">
+        <button id="ai-settings-btn" class="ghost sm">🤖 AI 설정</button>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <!-- ===== 탭 1: 학습 통계 (타이머가 기록한 풀이 데이터) ===== -->
+      <section id="tab-stats">
+        <section class="cards">
+          <div class="card"><div class="label">총 해결</div><div class="value" id="total-solved">0</div></div>
+          <div class="card"><div class="label">총 학습 시간</div><div class="value" id="total-time">0초</div></div>
+          <div class="card"><div class="label">연속 학습</div><div class="value"><span id="streak">0</span>일 🔥</div></div>
+          <div class="card"><div class="label">오늘</div><div class="value"><span id="today-solved">0</span>문제</div></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-hd">
+            <h2>최근 12주 학습 잔디</h2>
+            <span class="hint">진할수록 그날 많이 풀었어요</span>
+          </div>
+          <div id="heatmap" class="heatmap"></div>
+        </section>
+
+        <div class="two-col">
+          <section class="panel">
+            <div class="panel-hd"><h2>유형별 분석 (약점 찾기)</h2></div>
+            <div id="by-tag" class="bars"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-hd"><h2>사이트별</h2></div>
+            <div id="by-site" class="bars"></div>
+          </section>
+        </div>
+
+        <section class="panel">
+          <div class="panel-hd"><h2>최근 기록</h2></div>
+          <table class="tbl">
+            <thead>
+              <tr><th>날짜</th><th>사이트</th><th>문제</th><th>난이도</th><th>시간</th><th>상태</th></tr>
+            </thead>
+            <tbody id="recent-body"></tbody>
+          </table>
+        </section>
+
+        <section class="panel">
+          <div class="panel-hd"><h2>설정 / 풀이 기록 백업</h2></div>
+          <div class="settings">
+            <label class="set-row">
+              <span>뽀모도로 길이(분)</span>
+              <input type="number" id="pomo" min="1" max="120" />
+            </label>
+            <label class="set-row">
+              <span>문제 페이지 진입 시 타이머 자동 시작</span>
+              <input type="checkbox" id="autostart" />
+            </label>
+            <div class="set-actions">
+              <button id="save-settings" class="primary">설정 저장</button>
+              <button id="export" class="ghost">풀이기록 내보내기</button>
+              <button id="import" class="ghost">가져오기</button>
+              <button id="clear" class="danger">풀이기록 삭제</button>
+            </div>
+            <input type="file" id="import-file" accept="application/json" hidden />
+            <div id="msg" class="msg"></div>
+          </div>
+        </section>
+      </section>
+
+      <!-- ===== 탭 2: 공부 로드맵 ===== -->
+      <section id="tab-roadmap" hidden>
+        <div id="roadmap-view"></div>
+        <section class="panel">
+          <div class="panel-hd"><h2>로드맵·면접 진도 백업</h2></div>
+          <div class="set-actions">
+            <button id="ip-export" class="ghost">내보내기(JSON)</button>
+            <button id="ip-import" class="ghost">가져오기</button>
+            <button id="ip-reset" class="danger">진도 초기화</button>
+            <input type="file" id="ip-import-file" accept="application/json" hidden />
+          </div>
+        </section>
+      </section>
+
+      <!-- ===== 탭 3: 실전 풀이 (모의 면접 + AI) ===== -->
+      <section id="tab-interview" hidden>
+        <div class="iv-controls">
+          <label>
+            범위
+            <select id="iv-cat">
+              <option value="ALL">전체</option>
+              <option value="DB">데이터베이스</option>
+              <option value="ALGO">알고리즘</option>
+              <option value="CS">CS 기초</option>
+              <option value="ARCH">아키텍처</option>
+            </select>
+          </label>
+          <label>
+            난이도
+            <select id="iv-level">
+              <option value="ALL">전체</option>
+              <option value="기본">기본</option>
+              <option value="중급">중급</option>
+              <option value="심화">심화</option>
+            </select>
+          </label>
+          <label>
+            모드
+            <select id="iv-mode">
+              <option value="order">순서대로</option>
+              <option value="random">랜덤</option>
+              <option value="weak">약점 우선</option>
+            </select>
+          </label>
+          <button id="iv-start" class="primary">시작 / 다시 뽑기</button>
+        </div>
+
+        <div id="iv-stats" class="iv-stats"></div>
+        <div id="iv-card" class="iv-card"></div>
+      </section>
+    </main>
+
+    <footer class="foot">로컬 저장(chrome.storage + localStorage) · v0.3.0 · 타이머·통계 + 로드맵 + AI 모의면접</footer>
+
+    <!-- AI 면접관 설정 모달 -->
+    <div id="ai-modal" class="modal" hidden>
+      <div class="modal-card">
+        <h2>🤖 AI 면접관 설정</h2>
+        <p class="modal-warn">
+          ⚠️ 입력한 Anthropic API 키는 <b>이 브라우저에만</b> 저장되고, 호출은 확장에서
+          api.anthropic.com으로 직접 전송됩니다. 키를 소스코드에 넣거나 커밋하지 마세요.
+        </p>
+        <label>API 키
+          <input type="password" id="ai-key" placeholder="sk-ant-..." autocomplete="off" />
+        </label>
+        <label>모델
+          <select id="ai-model">
+            <option value="claude-opus-4-8">Claude Opus 4.8 (최고 품질)</option>
+            <option value="claude-sonnet-4-6">Claude Sonnet 4.6 (균형)</option>
+            <option value="claude-haiku-4-5">Claude Haiku 4.5 (저렴·빠름)</option>
+          </select>
+        </label>
+        <div class="modal-actions">
+          <button id="ai-save" class="primary">저장</button>
+          <button id="ai-close" class="ghost">닫기</button>
+        </div>
+        <p class="modal-hint">키 발급: console.anthropic.com</p>
+      </div>
+    </div>
+
+    <!-- Algo(크롬 스토리지) 라이브러리 -->
+    <script src="../lib/store.js"></script>
+    <script src="../lib/stats.js"></script>
+    <!-- 면접/로드맵 데이터 + 라이브러리(localStorage) -->
+    <script src="../../data/roadmap.data.js"></script>
+    <script src="../../data/questions.data.js"></script>
+    <script src="../lib/ip-store.js"></script>
+    <script src="../lib/ai.js"></script>
+    <!-- 대시보드 로직 -->
+    <script src="stats.js"></script>
+    <script src="roadmap.js"></script>
+    <script src="interview.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

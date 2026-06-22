@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "CodePrep — 코테·면접 올인원 트레이너",
+  "version": "0.3.0",
+  "description": "백준·프로그래머스·LeetCode 풀이 시간/통계 자동 기록 + 공부 로드맵 + AI 모의 면접까지 한 곳에서.",
+  "permissions": ["storage", "notifications"],
+  "host_permissions": [
+    "*://www.acmicpc.net/*",
+    "*://school.programmers.co.kr/*",
+    "*://leetcode.com/*",
+    "https://api.anthropic.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_title": "CodePrep"
+  },
+  "options_ui": {
+    "page": "src/dashboard/dashboard.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://www.acmicpc.net/problem/*",
+        "*://school.programmers.co.kr/learn/courses/30/lessons/*",
+        "*://leetcode.com/problems/*"
+      ],
+      "js": ["src/lib/sites.js", "src/lib/store.js", "src/content/content.js"],
+      "css": ["src/content/widget.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

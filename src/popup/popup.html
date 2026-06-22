@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="popup.css" />
+    <title>CodePrep</title>
+  </head>
+  <body>
+    <header class="hd">
+      <span class="logo"></span>
+      <h1>CodePrep</h1>
+    </header>
+
+    <section class="cards">
+      <div class="card">
+        <div class="label">오늘 해결</div>
+        <div class="value" id="today-solved">0</div>
+        <div class="sub" id="today-time">0초</div>
+      </div>
+      <div class="card">
+        <div class="label">연속 학습</div>
+        <div class="value"><span id="streak">0</span><span class="unit">일</span> 🔥</div>
+        <div class="sub" id="week-solved">이번 주 0문제</div>
+      </div>
+    </section>
+
+    <section class="recent">
+      <div class="recent-hd">최근 기록</div>
+      <ul id="recent-list" class="recent-list">
+        <li class="empty">아직 기록이 없어요. 문제 페이지를 열면 타이머가 떠요!</li>
+      </ul>
+    </section>
+
+    <footer class="ft">
+      <button id="open-dashboard" class="primary">📊 대시보드 열기</button>
+    </footer>
+
+    <script src="../lib/store.js"></script>
+    <script src="../lib/stats.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>
