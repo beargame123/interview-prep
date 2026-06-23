@@ -2,13 +2,23 @@
 (function () {
   const $ = (id) => document.getElementById(id);
 
+  const TABS = ["stats", "roadmap", "interview"];
+
   function switchTab(name) {
+    if (!TABS.includes(name)) name = "stats";
     document.querySelectorAll(".tab-btn").forEach((b) => {
       b.classList.toggle("active", b.dataset.tab === name);
     });
     $("tab-stats").hidden = name !== "stats";
     $("tab-roadmap").hidden = name !== "roadmap";
     $("tab-interview").hidden = name !== "interview";
+    if (location.hash.slice(1) !== name) {
+      try {
+        history.replaceState(null, "", "#" + name);
+      } catch (_) {
+        location.hash = name;
+      }
+    }
     if (name === "stats") globalThis.AlgoDash.renderStats();
     if (name === "roadmap") globalThis.IP.roadmap.render();
     if (name === "interview") globalThis.IP.interview.render();
@@ -71,7 +81,8 @@
       globalThis.IP.interview.render();
     });
 
-    switchTab("stats"); // 기본 탭
+    // 초기 탭: URL 해시(#roadmap 등) 우선, 없으면 통계
+    switchTab(TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "stats");
   }
 
   if (document.readyState === "loading") {

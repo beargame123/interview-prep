@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CodePrep — 코테·면접 올인원 트레이너</title>
+    <meta name="description" content="백준·프로그래머스·LeetCode 풀이 타이머/통계 + 단계별 공부 로드맵 + AI 모의 면접. 크롬 확장 + 웹 데모." />
+    <style>
+      :root {
+        --bg: #12141b; --panel: #1b1e29; --panel-2: #262a38; --line: #313547;
+        --text: #e6e8ee; --muted: #9aa1b1; --accent: #6366f1; --accent-2: #818cf8; --green: #34d399;
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; }
+      body {
+        background: radial-gradient(1200px 600px at 50% -10%, #1c2030 0%, var(--bg) 60%);
+        color: var(--text); min-height: 100vh;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+        line-height: 1.65;
+      }
+      .wrap { max-width: 880px; margin: 0 auto; padding: 64px 20px 56px; }
+      .logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+      .logo { width: 26px; height: 26px; border-radius: 50%; border: 5px solid var(--accent); }
+      .logo-row span { font-size: 15px; font-weight: 700; color: var(--muted); letter-spacing: .5px; }
+      h1 { font-size: 40px; line-height: 1.2; margin: 0 0 12px; }
+      h1 .grad { background: linear-gradient(90deg, #818cf8, #34d399); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+      .lead { font-size: 17px; color: #c7cbd6; margin: 0 0 14px; }
+      .stat-line { font-size: 13px; color: var(--muted); margin: 0 0 30px; }
+      .stat-line b { color: var(--accent-2); }
+      .cta { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 14px; }
+      .btn {
+        text-decoration: none; border-radius: 11px; font-weight: 700; font-size: 15px;
+        padding: 13px 20px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid transparent;
+      }
+      .btn.primary { background: var(--accent); color: #fff; }
+      .btn.primary:hover { background: #5457e0; }
+      .btn.ghost { background: var(--panel-2); color: var(--text); border-color: var(--line); }
+      .btn.ghost:hover { background: #2a2f3d; }
+      .note { font-size: 12.5px; color: var(--muted); margin: 6px 0 36px; }
+      .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 32px; }
+      .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; }
+      .card h3 { margin: 0 0 6px; font-size: 15px; }
+      .card p { margin: 0; font-size: 13px; color: var(--muted); }
+      .order { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; margin-bottom: 30px; }
+      .order h3 { margin: 0 0 10px; font-size: 14px; color: var(--accent-2); }
+      .order ol { margin: 0; padding-left: 20px; font-size: 13.5px; }
+      .order li { margin: 5px 0; }
+      .order .daily { color: var(--green); font-weight: 600; }
+      footer { font-size: 12px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 18px; }
+      footer a { color: var(--accent-2); }
+      @media (max-width: 640px) { h1 { font-size: 30px; } .grid { grid-template-columns: 1fr; } }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <div class="logo-row"><span class="logo"></span><span>CODEPREP</span></div>
+
+      <h1>코딩테스트와 백엔드 면접을<br /><span class="grad">한 곳에서 준비</span>하세요</h1>
+      <p class="lead">
+        백준·프로그래머스·LeetCode 풀이 타이머/통계 + <b>단계별 공부 로드맵</b> + AI 모의 면접.
+        Java/Spring → Python/Django 백엔드 이직을 위한 개인 학습 도구.
+      </p>
+      <p class="stat-line">
+        로드맵: <b>5개 페이즈</b> · <b>29개 스테이지</b> · <b>237개 토픽</b> · 136개 실습 · 170개 자가점검 질문 (DB → 알고리즘 → CS → 아키텍처 → Python)
+      </p>
+
+      <div class="cta">
+        <a class="btn primary" href="src/dashboard/dashboard.html#roadmap">📋 학습 로드맵 열기</a>
+        <a class="btn ghost" href="src/dashboard/dashboard.html#interview">🎤 실전 풀이(모의 면접)</a>
+        <a class="btn ghost" href="src/dashboard/dashboard.html#stats">📊 학습 통계</a>
+      </div>
+      <p class="note">
+        ※ 이 웹 데모(GitHub Pages)에서는 로드맵·모의 면접·AI 면접관이 모두 동작합니다. 진도는 이 브라우저(localStorage)에 저장돼요.
+        문제 페이지 자동 타이머/풀이 기록은 <b>크롬 확장 설치</b> 시 동작합니다.
+      </p>
+
+      <div class="grid">
+        <div class="card"><h3>⏱️ 인페이지 타이머</h3><p>문제 페이지에서 풀이 시간 자동 측정, 뽀모도로 알림, ✅해결/🔁시도 기록. (확장 전용)</p></div>
+        <div class="card"><h3>📊 학습 통계</h3><p>최근 12주 잔디, 유형별 약점, 사이트별, 연속 학습일, 최근 기록.</p></div>
+        <div class="card"><h3>📋 단계별 로드맵</h3><p>토픽·실습·자가점검·통과 기준까지. 페이즈→스테이지 순서대로 체크.</p></div>
+        <div class="card"><h3>🤖 AI 면접관</h3><p>본인 Anthropic 키(BYOK)로 답변 채점·꼬리질문. 키는 이 브라우저에만 저장.</p></div>
+      </div>
+
+      <div class="order">
+        <h3>학습 순서 (메인 트랙 + 상시 병행)</h3>
+        <ol>
+          <li>🗄️ <b>데이터베이스</b> — SQL/모델링 → 인덱스 → 트랜잭션/MVCC → 실행계획/N+1 → 복제/분산</li>
+          <li>🌐 <b>CS 기초</b> — HTTP → TCP → TLS/JWT/CORS → 프로세스/스레드 → 동시성/GIL → 데드락/메모리</li>
+          <li>🏛️ <b>아키텍처·DDD</b> — SOLID → 헥사고날/클린 → DDD 전술/전략 → 분산/운영</li>
+          <li>🐍 <b>Python/Django/DRF</b> — 언어 차이 → Django 코어 → DRF → 배포 → 캡스톤</li>
+          <li class="daily">🧩 알고리즘 · 🐍 Python — 첫날부터 매일 병행</li>
+        </ol>
+      </div>
+
+      <footer>
+        전체 서술형 로드맵: <a href="STUDY_ROADMAP.md">STUDY_ROADMAP.md</a> ·
+        빌드 없는 MV3 크롬 확장 + 정적 웹 데모 · 로컬 저장(localStorage / chrome.storage)
+      </footer>
+    </main>
+  </body>
+</html>

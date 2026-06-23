@@ -136,7 +136,7 @@
       </section>
     </main>
 
-    <footer class="foot">로컬 저장(chrome.storage + localStorage) · v0.3.0 · 타이머·통계 + 로드맵 + AI 모의면접</footer>
+    <footer class="foot">로컬 저장(chrome.storage + localStorage) · v0.4.0 · 단계별 로드맵 + 타이머·통계 + AI 모의면접</footer>
 
     <!-- AI 면접관 설정 모달 -->
     <div id="ai-modal" class="modal" hidden>
@@ -164,6 +164,8 @@
       </div>
     </div>
 
+    <!-- chrome.* shim: GitHub Pages 등 비확장 환경에서 chrome.storage를 localStorage로 대체 (확장에선 no-op) -->
+    <script src="../lib/chrome-shim.js"></script>
     <!-- Algo(크롬 스토리지) 라이브러리 -->
     <script src="../lib/store.js"></script>
     <script src="../lib/stats.js"></script>
