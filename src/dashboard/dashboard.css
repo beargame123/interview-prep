@@ -227,6 +227,7 @@ h2 { font-size: 14px; margin: 0; }
 .badge.cat-ALGO { background: #3a1d5230; color: #c4b5fd; }
 .badge.cat-CS { background: #0e4a3a30; color: #6ee7b7; }
 .badge.cat-ARCH { background: #52320e30; color: #fcd34d; }
+.badge.cat-PY { background: #4a0e5230; color: #f0abfc; }
 .badge.level { background: var(--panel-2); color: var(--muted); }
 .badge.prev { background: #2a2f3d; color: #9aa1b1; }
 .iv-progress { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; display: flex; align-items: center; gap: 10px; }
