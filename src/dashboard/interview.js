@@ -1,7 +1,7 @@
 /* 실전 풀이(모의 면접): 질문 제시 → 내 답변 작성 → 모범답안 대조 → 자가채점 */
 (function () {
   const store = window.IP.store;
-  const CAT_LABEL = { DB: "데이터베이스", ALGO: "알고리즘", CS: "CS 기초", ARCH: "아키텍처" };
+  const CAT_LABEL = { DB: "데이터베이스", ALGO: "알고리즘", CS: "CS 기초", ARCH: "아키텍처", PY: "Python/Django" };
   const RATING_W = { dunno: 0, meh: 1, unseen: 2, know: 3 }; // 약점 우선 정렬용(낮을수록 먼저)
 
   let queue = [];

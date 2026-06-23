@@ -81,6 +81,38 @@
       globalThis.IP.interview.render();
     });
 
+    // ----- 통합 백업 (통계 + 진도를 한 파일로) -----
+    const backupMsg = $("backup-msg");
+    function flashBackup(text) {
+      if (!backupMsg) return;
+      backupMsg.textContent = text;
+      setTimeout(() => (backupMsg.textContent = ""), 2800);
+    }
+    $("all-export").addEventListener("click", async () => {
+      const blob = new Blob([await globalThis.Backup.exportAll()], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `codeprep-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(a.href);
+      flashBackup("전체 백업을 내보냈어요 ✓");
+    });
+    $("all-import").addEventListener("click", () => $("all-import-file").click());
+    $("all-import-file").addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      try {
+        const r = await globalThis.Backup.importAll(await file.text());
+        globalThis.AlgoDash.renderStats();
+        globalThis.IP.roadmap.render();
+        globalThis.IP.interview.render();
+        flashBackup(`가져오기 완료 ✓ (${[r.algo ? "통계" : null, r.ip ? "진도" : null].filter(Boolean).join(" + ")})`);
+      } catch (err) {
+        flashBackup("실패: " + (err && err.message ? err.message : err));
+      }
+      e.target.value = "";
+    });
+
     // 초기 탭: URL 해시(#roadmap 등) 우선, 없으면 통계
     switchTab(TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "stats");
   }

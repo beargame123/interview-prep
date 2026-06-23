@@ -88,13 +88,19 @@
       <section id="tab-roadmap" hidden>
         <div id="roadmap-view"></div>
         <section class="panel">
-          <div class="panel-hd"><h2>로드맵·면접 진도 백업</h2></div>
+          <div class="panel-hd"><h2>백업 / 복원</h2><span class="hint">통계(풀이기록)와 진도를 한 파일로</span></div>
           <div class="set-actions">
-            <button id="ip-export" class="ghost">내보내기(JSON)</button>
-            <button id="ip-import" class="ghost">가져오기</button>
+            <button id="all-export" class="primary">📦 전체 백업 내보내기 (통계+진도)</button>
+            <button id="all-import" class="ghost">전체 백업 가져오기</button>
+            <input type="file" id="all-import-file" accept="application/json" hidden />
+          </div>
+          <div class="set-actions">
+            <button id="ip-export" class="ghost">진도만 내보내기</button>
+            <button id="ip-import" class="ghost">진도만 가져오기</button>
             <button id="ip-reset" class="danger">진도 초기화</button>
             <input type="file" id="ip-import-file" accept="application/json" hidden />
           </div>
+          <div id="backup-msg" class="msg"></div>
         </section>
       </section>
 
@@ -109,6 +115,7 @@
               <option value="ALGO">알고리즘</option>
               <option value="CS">CS 기초</option>
               <option value="ARCH">아키텍처</option>
+              <option value="PY">Python/Django</option>
             </select>
           </label>
           <label>
@@ -174,6 +181,7 @@
     <script src="../../data/questions.data.js"></script>
     <script src="../lib/ip-store.js"></script>
     <script src="../lib/ai.js"></script>
+    <script src="../lib/backup.js"></script>
     <!-- 대시보드 로직 -->
     <script src="stats.js"></script>
     <script src="roadmap.js"></script>
