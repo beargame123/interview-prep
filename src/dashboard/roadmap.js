@@ -1,4 +1,4 @@
-/* 로드맵 탭(인덱스형): 페이즈 → 스테이지 목록. 스테이지를 누르면 learn.html이 새 탭에서 열린다.
+/* 로드맵 탭(인덱스형): 페이즈 → 스테이지 목록. 스테이지를 누르면 learn.html이 별도 창(팝업)으로 열린다.
  * 상세 학습/체크는 learn.html에서, 여기서는 진행률 인덱스만.
  * 데이터: window.ROADMAP, window.ROADMAP_PLAN / 진도: window.IP.store (learn.html과 키 공유)
  */
@@ -62,6 +62,20 @@
     a.href = `learn.html?phase=${encodeURIComponent(ph.id)}&stage=${encodeURIComponent(st.id)}`;
     a.target = "_blank";
     a.rel = "noopener";
+
+    // 일반 클릭 → 별도 학습 '창'(팝업 윈도우)으로 띄움. Ctrl/⌘/Shift/가운데 클릭은 기본(새 탭) 허용.
+    a.addEventListener("click", (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+      e.preventDefault();
+      const features = "popup=yes,width=1040,height=940,left=140,top=60";
+      const w = window.open(a.href, "codeprep-learn", features);
+      if (w) {
+        try { w.opener = null; } catch (_) {}
+        w.focus();
+      } else {
+        window.open(a.href, "_blank"); // 팝업 차단 시 새 탭 폴백
+      }
+    });
 
     a.appendChild(el("span", "rm-srow-num", `S${st.num}`));
     const mid = el("span", "rm-srow-mid");
@@ -200,7 +214,7 @@
     overall.appendChild(top);
     const { wrap, fill } = progressBar();
     overall.appendChild(wrap);
-    overall.appendChild(el("div", "rm-tip", "스테이지를 누르면 새 탭에서 학습 페이지가 열려요. 학습 후 '✅ 학습 완료'와 '📋 Claude 퀴즈용 복사'를 쓰세요."));
+    overall.appendChild(el("div", "rm-tip", "스테이지를 누르면 별도 학습 창이 떠요(Ctrl/⌘+클릭은 새 탭). 학습 후 '✅ 학습 완료'와 '📋 Claude 퀴즈용 복사'를 쓰세요."));
     root.appendChild(overall);
 
     const allKeys = [];
