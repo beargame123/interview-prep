@@ -1,11 +1,21 @@
-/* 로드맵 탭(인덱스형): 페이즈 → 스테이지 목록. 스테이지를 누르면 learn.html이 별도 창(팝업)으로 열린다.
- * 상세 학습/체크는 learn.html에서, 여기서는 진행률 인덱스만.
+/* 로드맵 탭(페이즈 탭형): 상단 페이즈 버튼 → 선택한 페이즈 하나만 표시(페이즈 간 스크롤 제거).
+ * 스테이지를 누르면 learn.html이 별도 창(팝업)으로 열린다.
  * 데이터: window.ROADMAP, window.ROADMAP_PLAN / 진도: window.IP.store (learn.html과 키 공유)
  */
 (function () {
   const store = window.IP.store;
   const PRIO_LABEL = { 1: "최우선", 2: "중요", 3: "후순위" };
+  const SHORT = { db: "DB", algo: "알고리즘", cs: "CS", arch: "아키텍처", java: "Java/Kotlin" };
+  const PHASE_KEY = "cp_roadmap_phase";
+
   let counters = [];
+  let activePhaseId = (() => {
+    try {
+      return localStorage.getItem(PHASE_KEY) || null;
+    } catch (_) {
+      return null;
+    }
+  })();
 
   const topicKey = (st, i) => `${st.id}/t${i}`;
   const handsKey = (st, i) => `${st.id}/h${i}`;
@@ -24,6 +34,10 @@
     return k;
   }
   const countDone = (keys) => keys.filter((k) => store.isDone(k)).length;
+  function phaseCount(ph) {
+    const k = phaseKeys(ph);
+    return { done: countDone(k), total: k.length };
+  }
 
   function el(tag, cls, text) {
     const n = document.createElement(tag);
@@ -56,14 +70,14 @@
     return row;
   }
 
-  // 스테이지 = learn.html로 가는 링크 행
+  // 스테이지 = learn.html을 별도 창(팝업)으로 여는 행
   function buildStageRow(ph, st) {
     const a = el("a", "rm-srow" + (st.star ? " star" : ""));
     a.href = `learn.html?phase=${encodeURIComponent(ph.id)}&stage=${encodeURIComponent(st.id)}`;
     a.target = "_blank";
     a.rel = "noopener";
 
-    // 일반 클릭 → 별도 학습 '창'(팝업 윈도우)으로 띄움. Ctrl/⌘/Shift/가운데 클릭은 기본(새 탭) 허용.
+    // 일반 클릭 → 별도 학습 '창'(팝업 윈도우). Ctrl/⌘/Shift/가운데 클릭은 기본(새 탭) 허용.
     a.addEventListener("click", (e) => {
       if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
       e.preventDefault();
@@ -73,7 +87,7 @@
         try { w.opener = null; } catch (_) {}
         w.focus();
       } else {
-        window.open(a.href, "_blank"); // 팝업 차단 시 새 탭 폴백
+        window.open(a.href, "_blank");
       }
     });
 
@@ -136,6 +150,33 @@
     return section;
   }
 
+  // 상단 페이즈 탭
+  function buildPhaseTabs(phases) {
+    const nav = el("div", "rm-ptabs");
+    phases.forEach((ph) => {
+      const btn = el("button", "rm-ptab prio-bd-" + ph.priority + (ph.id === activePhaseId ? " active" : ""));
+      btn.type = "button";
+      btn.appendChild(el("span", "rm-ptab-emoji", ph.emoji || "📌"));
+      btn.appendChild(el("span", "rm-ptab-name", SHORT[ph.id] || ph.title));
+      const badge = el("span", "rm-ptab-count");
+      btn.appendChild(badge);
+      counters.push(() => {
+        const { done, total } = phaseCount(ph);
+        badge.textContent = `${done}/${total}`;
+        btn.classList.toggle("complete", total > 0 && done === total);
+      });
+      btn.addEventListener("click", () => {
+        if (activePhaseId === ph.id) return;
+        activePhaseId = ph.id;
+        try { localStorage.setItem(PHASE_KEY, ph.id); } catch (_) {}
+        render();
+        document.getElementById("roadmap-view").scrollIntoView({ block: "start" });
+      });
+      nav.appendChild(btn);
+    });
+    return nav;
+  }
+
   // ----- 전체 계획 패널 -----
   function buildPlan() {
     const plan = window.ROADMAP_PLAN;
@@ -165,7 +206,7 @@
       body.appendChild(t);
     }
     if (plan.weekly && plan.weekly.length) {
-      body.appendChild(el("div", "rm-sub-title", "주차별 플랜 (상시: 🟩 알고리즘 1문제/일 · ☕ Java/Kotlin 심화 1개/일)"));
+      body.appendChild(el("div", "rm-sub-title", "주차별 플랜 (상시: 🟩 알고리즘 1문제/일 · ☕ Java/Kotlin 심화 1개념/일)"));
       const t = el("table", "rm-plan-tbl");
       const h2 = el("tr");
       ["주차", "평일 메인", "주말 실습", "알고리즘"].forEach((h) => h2.appendChild(el("th", null, h)));
@@ -204,7 +245,10 @@
     counters = [];
 
     const phases = (window.ROADMAP || []).slice();
+    if (!phases.length) return;
+    if (!activePhaseId || !phases.some((p) => p.id === activePhaseId)) activePhaseId = phases[0].id;
 
+    // 전체 진행률
     const overall = el("div", "overall");
     const top = el("div", "overall-top");
     top.appendChild(el("span", null, "전체 진행률"));
@@ -214,7 +258,7 @@
     overall.appendChild(top);
     const { wrap, fill } = progressBar();
     overall.appendChild(wrap);
-    overall.appendChild(el("div", "rm-tip", "스테이지를 누르면 별도 학습 창이 떠요(Ctrl/⌘+클릭은 새 탭). 학습 후 '✅ 학습 완료'와 '📋 Claude 퀴즈용 복사'를 쓰세요."));
+    overall.appendChild(el("div", "rm-tip", "위 페이즈 버튼으로 분야를 고르면 그 페이즈만 보여요(스크롤 없이 전환). 스테이지를 누르면 별도 학습 창이 뜨고, 학습 후 '✅ 학습 완료'·'📋 Claude 퀴즈용 복사'를 쓰세요."));
     root.appendChild(overall);
 
     const allKeys = [];
@@ -229,7 +273,11 @@
     const plan = buildPlan();
     if (plan) root.appendChild(plan);
 
-    phases.forEach((ph) => root.appendChild(buildPhase(ph)));
+    // 페이즈 탭 + 선택된 페이즈 하나만
+    root.appendChild(buildPhaseTabs(phases));
+    const active = phases.find((p) => p.id === activePhaseId);
+    root.appendChild(buildPhase(active));
+
     refresh();
   }
 

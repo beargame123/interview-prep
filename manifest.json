@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "CodePrep — 코테·면접 올인원 트레이너",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "description": "백준·프로그래머스·LeetCode 풀이 시간/통계 자동 기록 + 공부 로드맵 + AI 모의 면접까지 한 곳에서.",
   "permissions": ["storage", "notifications"],
   "host_permissions": [
