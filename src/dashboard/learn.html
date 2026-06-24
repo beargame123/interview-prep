@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="dashboard.css" />
+    <title>CodePrep — 학습</title>
+  </head>
+  <body>
+    <header class="learn-hd">
+      <a class="learn-back ghost sm" href="dashboard.html#roadmap">← 대시보드</a>
+      <div id="learn-crumb" class="learn-crumb"></div>
+      <div class="learn-hd-sp"></div>
+      <div id="learn-nav" class="learn-nav"></div>
+    </header>
+
+    <main class="learn-wrap">
+      <div id="learn-root"></div>
+    </main>
+
+    <!-- 진도(localStorage)만 필요 — chrome.storage 불필요 -->
+    <script src="../../data/roadmap.data.js"></script>
+    <script src="../lib/ip-store.js"></script>
+    <script src="learn.js"></script>
+  </body>
+</html>
