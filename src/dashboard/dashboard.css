@@ -150,6 +150,16 @@ h2 { font-size: 14px; margin: 0; }
 .rm-plan-daily { color: var(--muted); font-size: 11.5px; margin-top: 2px; }
 .rm-cp-t { font-weight: 700; font-size: 13px; margin: 10px 0 2px; color: #c3c8d4; }
 
+/* 페이즈 탭 (분야 전환 — 한 번에 한 페이즈만 표시) */
+.rm-ptabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.rm-ptab { display: flex; align-items: center; gap: 7px; cursor: pointer; border: 1px solid var(--line); border-left-width: 3px; background: var(--panel); color: var(--muted); border-radius: 11px; padding: 9px 13px; font-size: 14px; font-weight: 700; }
+.rm-ptab:hover { background: var(--panel-2); color: var(--text); }
+.rm-ptab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.rm-ptab-emoji { font-size: 16px; }
+.rm-ptab-count { font-size: 11px; font-variant-numeric: tabular-nums; background: rgba(0,0,0,.22); color: inherit; opacity: .85; padding: 1px 7px; border-radius: 999px; }
+.rm-ptab.active .rm-ptab-count { background: rgba(255,255,255,.22); opacity: 1; }
+.rm-ptab.complete:not(.active) .rm-ptab-count { color: var(--green); }
+
 /* 페이즈 카드 */
 .rm-phase { background: var(--panel); border: 1px solid var(--line); border-left-width: 4px; border-radius: 14px; padding: 16px 18px; margin-bottom: 16px; }
 .prio-bd-1 { border-left-color: #fb7185; }
